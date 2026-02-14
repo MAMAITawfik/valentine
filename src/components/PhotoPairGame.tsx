@@ -87,81 +87,96 @@ export default function PhotoPairGame({
       handleShowProposal();
     }
   }, [matched, handleShowProposal]);
+  const forceWin = () => {
+    // matched doit contenir tous les index de 0 à 35
+    setMatched(Array.from({ length: imagePairs.length }, (_, i) => i));
+    setSelected([]);
+    setIncorrect([]);
+  };
 
   return (
-    <div className="grid grid-cols-9 gap-1 lg:gap-2 max-w-[95vw] mx-auto place-items-center">
-      {/* Image preload */}
-      <div className="hidden">
-        {images.map((image, i) => (
-          <Image
-            key={i}
-            src={image}
-            alt={`Image ${i + 1}`}
-            fill
-            className="object-cover"
-            priority
-          />
-        ))}
-      </div>
+    <div className="flex flex-col items-center">
+        {/* DEV button */}
+        <button
+          onClick={forceWin}
+          className="mb-4 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20"
+        >
+          DEV: Skip game ✅
+        </button>
+      <div className="grid grid-cols-9 gap-1 lg:gap-2 max-w-[95vw] mx-auto place-items-center">
+        {/* Image preload */}
+        <div className="hidden">
+          {images.map((image, i) => (
+            <Image
+              key={i}
+              src={image}
+              alt={`Image ${i + 1}`}
+              fill
+              className="object-cover"
+              priority
+            />
+          ))}
+        </div>
 
-      {heartLayout.flat().map((index, i) =>
-        index !== null ? (
-          <motion.div
-            key={i}
-            className="w-[11vh] h-[11vh] lg:w-20 lg:h-20 relative cursor-pointer"
-            whileHover={{ scale: 1.1 }}
-            onClick={() => handleClick(index)}
-            style={{ perspective: "1000px" }} // Add perspective for 3D effect
-          >
-            {/* Back of the card */}
-            {!selected.includes(index) && !matched.includes(index) && (
-              <motion.div
-                className="w-full h-full bg-gray-300 rounded-sm lg:rounded-md absolute z-10"
-                initial={{ rotateY: 0 }}
-                animate={{
-                  rotateY:
-                    selected.includes(index) || matched.includes(index)
-                      ? 180
-                      : 0,
-                }}
-                transition={{ duration: 0.5 }}
-                style={{ backfaceVisibility: "hidden" }}
-              />
-            )}
-
-            {/* Front of the card (image) */}
-            {(selected.includes(index) || matched.includes(index)) && (
-              <motion.div
-                className="w-full h-full absolute"
-                initial={{ rotateY: -180 }}
-                animate={{ rotateY: 0 }}
-                transition={{ duration: 0.5 }}
-                style={{ backfaceVisibility: "hidden" }}
-              >
-                <Image
-                  src={images[index]}
-                  alt={`Imagen ${index + 1}`}
-                  fill
-                  className="rounded-sm lg:rounded-md object-cover"
+        {heartLayout.flat().map((index, i) =>
+          index !== null ? (
+            <motion.div
+              key={i}
+              className="w-[11vh] h-[11vh] lg:w-20 lg:h-20 relative cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              onClick={() => handleClick(index)}
+              style={{ perspective: "1000px" }} // Add perspective for 3D effect
+            >
+              {/* Back of the card */}
+              {!selected.includes(index) && !matched.includes(index) && (
+                <motion.div
+                  className="w-full h-full bg-gray-300 rounded-sm lg:rounded-md absolute z-10"
+                  initial={{ rotateY: 0 }}
+                  animate={{
+                    rotateY:
+                      selected.includes(index) || matched.includes(index)
+                        ? 180
+                        : 0,
+                  }}
+                  transition={{ duration: 0.5 }}
+                  style={{ backfaceVisibility: "hidden" }}
                 />
-              </motion.div>
-            )}
+              )}
 
-            {/* Incorrect animation */}
-            {incorrect.includes(index) && (
-              <motion.div
-                className="absolute inset-0"
-                animate={{ scale: [1, 1.1, 1], opacity: [1, 0, 1] }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="w-full h-full bg-red-500 rounded-sm lg:rounded-md"></div>
-              </motion.div>
-            )}
-          </motion.div>
-        ) : (
-          <div key={i} className="w-[11vh] h-[11vh] lg:w-20 lg:h-20" />
-        ),
-      )}
+              {/* Front of the card (image) */}
+              {(selected.includes(index) || matched.includes(index)) && (
+                <motion.div
+                  className="w-full h-full absolute"
+                  initial={{ rotateY: -180 }}
+                  animate={{ rotateY: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <Image
+                    src={images[index]}
+                    alt={`Imagen ${index + 1}`}
+                    fill
+                    className="rounded-sm lg:rounded-md object-cover"
+                  />
+                </motion.div>
+              )}
+
+              {/* Incorrect animation */}
+              {incorrect.includes(index) && (
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{ scale: [1, 1.1, 1], opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="w-full h-full bg-red-500 rounded-sm lg:rounded-md"></div>
+                </motion.div>
+              )}
+            </motion.div>
+          ) : (
+            <div key={i} className="w-[11vh] h-[11vh] lg:w-20 lg:h-20" />
+          ),
+        )}
+      </div>
     </div>
   );
 }
