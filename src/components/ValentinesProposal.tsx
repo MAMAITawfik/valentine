@@ -66,7 +66,7 @@ export default function ValentinesProposal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            petit question avant de finir ...
+            Petite question avant de finir ...
           </motion.h2>
         )}
         {step === 2 && (
@@ -138,9 +138,11 @@ export default function ValentinesProposal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            Ok… j’avoue : t'es chauuud
-            faut que j'avoue aussi que je t'aime houbi 😘
-            Je te choisis. Aujourd’hui, demain, et après. 
+            <>
+              Bonne réponse, maintenant t'es ma Valentine 😛. <br />
+              Moi aussi je te choisis. Aujourd’hui, demain, et après. <br />
+              Je t'aime houbi 😘
+            </>
             <Image
               src="/hamster_jumping.gif"
               alt="Hamster Feliz"
